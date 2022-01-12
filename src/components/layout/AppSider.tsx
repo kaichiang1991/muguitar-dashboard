@@ -1,15 +1,8 @@
-import { Layout, Menu, Row, Col, MenuTheme, MenuItemProps } from 'antd'
-import {
-  createElement,
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react'
+import { Layout, Menu, Row, Col, MenuTheme, MenuItemProps, message } from 'antd'
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import menuData, { brandDef } from '../../data/menu'
-import { useHistory } from 'react-router-dom'
+import menuData, { brandDef, IMenuObj } from '../../data/menu'
+import { useHistory, useLocation } from 'react-router-dom'
 
 //#region Logo
 const StyledLogoContainer = styled(Row)`
@@ -34,10 +27,12 @@ const SiderLogo: FC<ISiderLogoProps> = ({ isCollapsed }) => {
     setSpanArr(isCollapsed ? [24, 0] : [4, 20])
   }, [isCollapsed, setSpanArr])
 
-  const { icon, name } = brandDef
+  const { Icon, name } = brandDef
   return (
     <StyledLogoContainer>
-      <StyledCol span={logoSpan}>{createElement(icon)}</StyledCol>
+      <StyledCol span={logoSpan}>
+        <Icon />
+      </StyledCol>
       <StyledCol span={textSpan}>{name}</StyledCol>
     </StyledLogoContainer>
   )
@@ -76,6 +71,21 @@ interface Props {
 
 const AppSider: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
   const [theme, setTheme] = useState<MenuTheme>('dark')
+  const [selectKeys, setSelectKeys] = useState<Array<string>>([])
+
+  const { pathname } = useLocation()
+  useEffect(() => {
+    const match: IMenuObj | undefined = menuData.find(
+      menu => menu.to === pathname
+    )
+
+    if (!match) {
+      message.error('路徑錯誤，請重新整理')
+      return
+    }
+
+    setSelectKeys([match.key])
+  }, [menuData, pathname])
 
   return (
     <StyledAppSider
@@ -87,7 +97,7 @@ const AppSider: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
       collapsed={isCollapsed}
     >
       <SiderLogo isCollapsed={isCollapsed} />
-      <Menu theme={theme} defaultSelectedKeys={['0']}>
+      <Menu theme={theme} selectedKeys={selectKeys}>
         {menuData.map(({ IconElement, name, ...props }) => (
           <SiderItem {...props} name={name} icon={<IconElement />} />
         ))}

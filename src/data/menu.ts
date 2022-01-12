@@ -9,22 +9,22 @@ type IconType = typeof Icon
 
 interface IBrandDef {
   name: string // 品牌名稱
-  icon: IconType // Logo 圖標
+  Icon: IconType // Logo 圖標
 }
 
 export const brandDef: IBrandDef = {
   name: 'BRAND',
-  icon: AppleFilled,
+  Icon: AppleFilled,
 }
 
-interface IMenuObj extends MenuItemProps {
+export interface IMenuObj extends MenuItemProps {
   key: string // MenuItem key
   IconElement: IconType // Icon
   name: string // 顯示名稱
   to: string // router 路徑
 }
 
-const menu: Array<IMenuObj> = [
+const menuData: Array<IMenuObj> = [
   {
     key: '0',
     IconElement: DashboardOutlined,
@@ -39,4 +39,4 @@ const menu: Array<IMenuObj> = [
   },
 ]
 
-export default menu
+export default menuData
