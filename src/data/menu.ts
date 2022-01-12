@@ -28,14 +28,14 @@ const menu: Array<IMenuObj> = [
   {
     key: '0',
     IconElement: DashboardOutlined,
-    name: '123',
-    to: '/123',
+    name: 'Dashboard',
+    to: '/dashboard',
   },
   {
     key: '1',
     IconElement: CalendarOutlined,
-    name: '456',
-    to: '/456',
+    name: 'Calender',
+    to: '/dashboard/calender',
   },
 ]
 
