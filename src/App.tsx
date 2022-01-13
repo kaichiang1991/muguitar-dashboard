@@ -5,7 +5,7 @@ import MainPage from './pages/MainPage'
 import { useRecoilValue } from 'recoil'
 import LoginPage from './pages/LoginPage'
 import { useEffect } from 'react'
-import { ILoginState, loginState } from './recoil'
+import { loginState } from './recoil'
 import { ConfigProvider } from 'antd'
 import zhTW from 'antd/lib/locale/zh_TW'
 

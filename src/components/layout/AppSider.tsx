@@ -70,7 +70,7 @@ interface Props {
 }
 
 const AppSider: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
-  const [theme, setTheme] = useState<MenuTheme>('dark')
+  const [theme] = useState<MenuTheme>('dark')
   const [selectKeys, setSelectKeys] = useState<Array<string>>([])
 
   const { pathname } = useLocation()
@@ -85,7 +85,7 @@ const AppSider: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
     }
 
     setSelectKeys([match.key])
-  }, [menuData, pathname])
+  }, [pathname])
 
   return (
     <StyledAppSider

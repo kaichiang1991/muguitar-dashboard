@@ -3,7 +3,9 @@ import { Calendar, Badge, Popover, PopoverProps } from 'antd'
 import styled from 'styled-components'
 import moment from 'moment'
 import { PresetStatusColorType } from 'antd/lib/_util/colors'
-import { record } from '../mock/attendence'
+import { useReloadAttendence } from '../components/common/CustomHook'
+import { useRecoilValue } from 'recoil'
+import { attendRecordState } from '../recoil'
 
 //#region Popover 移到項目上的提示
 const StyledContent = styled.div`
@@ -66,15 +68,15 @@ interface IListData {
 }
 
 // 取得每天行事曆資料
-// ToDo 讀取資料庫
-const getListData: {
-  (value: moment.Moment): Array<IListData>
-} = value => {
-  const mapRecord = record
+const getListData = (
+  value: moment.Moment,
+  records: Array<IAttendenceData>
+): Array<IListData> => {
+  const mapRecord = records
     .filter(({ date }) => value.isSame(date, 'day'))
     .map(({ teacher, student }) => ({
       type:
-        teacher == 'Run' ? 'success' : teacher == 'Kai' ? 'warning' : 'error',
+        teacher === 'Run' ? 'success' : teacher === 'Kai' ? 'warning' : 'error',
       content: `${teacher} - ${student}`,
     }))
 
@@ -109,8 +111,11 @@ const StyledBadge = styled(Badge)`
   }
 `
 
-const dateCellRender: { (value: moment.Moment): ReactNode } = value => {
-  const listData = getListData(value)
+const dateCellRender = (
+  _moment: moment.Moment,
+  records: Array<IAttendenceData>
+): ReactNode => {
+  const listData = getListData(_moment, records)
 
   return (
     <StyledDateUl>
@@ -124,14 +129,16 @@ const dateCellRender: { (value: moment.Moment): ReactNode } = value => {
 }
 //#endregion dateCellRender
 
-interface Props {}
-
 const SteyldCalenderContainer = styled(Calendar)`
   padding-right: 8px;
 `
 
-const CalenderPage = () => {
-  return <SteyldCalenderContainer dateCellRender={dateCellRender} />
+const CalenderPage: FC = () => {
+  useReloadAttendence()
+  const records: Array<IAttendenceData> = useRecoilValue(attendRecordState)
+  return (
+    <SteyldCalenderContainer dateCellRender={v => dateCellRender(v, records)} />
+  )
 }
 
 export default CalenderPage

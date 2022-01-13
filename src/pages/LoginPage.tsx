@@ -4,7 +4,7 @@ import { useForm } from 'antd/lib/form/Form'
 import React from 'react'
 import { useSetRecoilState } from 'recoil'
 import styled from 'styled-components'
-import { ILoginState, loginState } from '../recoil'
+import { loginState } from '../recoil'
 
 const StyledLoginPageContainer = styled.div`
   width: 100%;
@@ -27,8 +27,6 @@ const StyledForm = styled(Form)`
     width: 100%;
   }
 `
-
-interface Props {}
 
 interface IFormValues extends ILoginState {
   remember?: boolean

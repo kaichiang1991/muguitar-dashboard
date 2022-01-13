@@ -1,8 +1,8 @@
 import { Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
-import { nanoid } from 'nanoid'
-import React, { useEffect, useState } from 'react'
-import { record } from '../mock/attendence'
+import { FC } from 'react'
+import { useRecoilValue } from 'recoil'
+import { sortAttendRecordState } from '../recoil'
 
 // 定義欄位
 const columns: ColumnsType<Object> = [
@@ -10,31 +10,17 @@ const columns: ColumnsType<Object> = [
   { title: '學生', dataIndex: 'student', width: 150 },
   { title: '日期', dataIndex: 'date' },
 ]
-interface Props {}
 
-// ToDo 從 server 拿
-// 取得出席紀錄
-const useAttendanceRecord: { (): Array<Object> } = () => {
-  const [arr, setArr] = useState<Array<Object>>([])
-  useEffect(() => {
-    const data = record.map(({ teacher, student, date }) => ({
-      key: nanoid(),
-      teacher,
-      student,
-      date: date.format('YYYY-MM-DD'),
-    }))
-    setArr(data)
-  }, [setArr])
+const AttendanceRecord: FC = () => {
+  const records = useRecoilValue(sortAttendRecordState)
 
-  return arr
-}
-
-const AttendanceRecord = (props: Props) => {
-  const data = useAttendanceRecord()
   return (
     <Table
       columns={columns}
-      dataSource={data}
+      dataSource={records.map(data => ({
+        ...data,
+        date: data.date.format('YYYY-MM-DD'),
+      }))}
       pagination={{ pageSize: 5 }}
     ></Table>
   )

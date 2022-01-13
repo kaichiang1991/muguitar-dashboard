@@ -8,11 +8,9 @@ import { createElement, Dispatch, FC, SetStateAction } from 'react'
 import { Link } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
-import { ILoginState, loginState } from '../../recoil'
+import { loginState } from '../../recoil'
 
 //#region UserInfo
-interface IUserInfoProps {}
-
 const StyledUserInfoContainer = styled.div`
   display: flex;
   align-items: center;
@@ -39,7 +37,7 @@ const StyledUserInfo = styled.div`
   margin-left: 8px;
 `
 
-const UserInfo: FC<IUserInfoProps> = ({}) => {
+const UserInfo: FC = () => {
   const { username }: ILoginState = useRecoilValue(loginState)
 
   return (

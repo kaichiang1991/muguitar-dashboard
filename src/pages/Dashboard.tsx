@@ -1,13 +1,15 @@
 import { Col, Row } from 'antd'
-import React from 'react'
 import styled from 'styled-components'
 import AttendanceRecord from '../components/AttendanceRecord'
+import { useReloadAttendence } from '../components/common/CustomHook'
 
 const StyledRow = styled(Row)``
 
 interface Props {}
 
 const Dashboard = (props: Props) => {
+  useReloadAttendence()
+
   return (
     <StyledRow>
       <Col span={24}>

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import DefaultLayout from '../components/layout/DefaultLayout'
 import CalenderPage from './CalenderPage'

@@ -17,7 +17,7 @@ interface IBreadCrumbMap {
 
 // 根據 menu 定義去定義 breadcrumb 的屬性
 const breadcrumbNameMap: IBreadCrumbMap = {}
-menuData.map(({ name, to, IconElement }) => {
+menuData.forEach(({ name, to, IconElement }) => {
   breadcrumbNameMap[to] = { name, Icon: IconElement }
 })
 
