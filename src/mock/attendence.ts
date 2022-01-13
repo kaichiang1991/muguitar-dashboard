@@ -1,4 +1,6 @@
 import moment from 'moment'
+import 'moment/locale/zh-tw'
+moment.locale('zh-tw')
 
 export const record: Array<IAttendenceData> = [
   {
@@ -23,6 +25,6 @@ export const record: Array<IAttendenceData> = [
     key: 'data3',
     teacher: 'Ray',
     student: 'B',
-    date: moment().year(2022).month(1).date(5), // 2022-2-5
+    date: moment().year(2022).month(1).date(5).hour(15).minute(0), // 2022-2-5, 15:00
   },
 ]

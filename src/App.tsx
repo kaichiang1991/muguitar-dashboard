@@ -8,6 +8,9 @@ import { useEffect } from 'react'
 import { loginState } from './recoil'
 import { ConfigProvider } from 'antd'
 import zhTW from 'antd/lib/locale/zh_TW'
+import moment from 'moment'
+import 'moment/locale/zh-tw'
+moment.locale('zh-tw')
 
 const App = () => {
   const history = useHistory()

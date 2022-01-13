@@ -19,7 +19,7 @@ const AttendanceRecord: FC = () => {
       columns={columns}
       dataSource={records.map(data => ({
         ...data,
-        date: data.date.format('YYYY-MM-DD'),
+        date: data.date.format('MMMM Do YYYY, h:mm'),
       }))}
       pagination={{ pageSize: 5 }}
     ></Table>
