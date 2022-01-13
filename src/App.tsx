@@ -6,6 +6,8 @@ import { useRecoilValue } from 'recoil'
 import LoginPage from './pages/LoginPage'
 import { useEffect } from 'react'
 import { ILoginState, loginState } from './recoil'
+import { ConfigProvider } from 'antd'
+import zhTW from 'antd/lib/locale/zh_TW'
 
 const App = () => {
   const history = useHistory()
@@ -19,7 +21,7 @@ const App = () => {
     }
   }, [history, username])
   return (
-    <>
+    <ConfigProvider locale={zhTW}>
       <GlobalStyle />
       <Switch>
         <Route path='/login' component={LoginPage} />
@@ -27,7 +29,7 @@ const App = () => {
         <Route path='/dashboard/:subtitle' />
         <Redirect to='/dashboard' />
       </Switch>
-    </>
+    </ConfigProvider>
   )
 }
 
