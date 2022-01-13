@@ -2,27 +2,27 @@ import { Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { nanoid } from 'nanoid'
 import React, { useEffect, useState } from 'react'
+import { record } from '../mock/attendence'
 
+// 定義欄位
 const columns: ColumnsType<Object> = [
-  { title: '老師', dataIndex: 'name', width: 150 },
+  { title: '老師', dataIndex: 'teacher', width: 150 },
   { title: '學生', dataIndex: 'student', width: 150 },
   { title: '日期', dataIndex: 'date' },
 ]
 interface Props {}
 
+// ToDo 從 server 拿
+// 取得出席紀錄
 const useAttendanceRecord: { (): Array<Object> } = () => {
   const [arr, setArr] = useState<Array<Object>>([])
   useEffect(() => {
-    // ToDo 取得 server 資料
-    const data = Array(30)
-      .fill(1)
-      .map((_, index) => ({
-        key: nanoid(),
-        name: `Eric ${index}`,
-        date: `2021/01/${(index + 1) % 31}`,
-        student: `Student ${index}`,
-      }))
-
+    const data = record.map(({ teacher, student, date }) => ({
+      key: nanoid(),
+      teacher,
+      student,
+      date: date.format('YYYY-MM-DD'),
+    }))
     setArr(data)
   }, [setArr])
 
@@ -35,7 +35,7 @@ const AttendanceRecord = (props: Props) => {
     <Table
       columns={columns}
       dataSource={data}
-      pagination={{ pageSize: 3 }}
+      pagination={{ pageSize: 5 }}
     ></Table>
   )
 }

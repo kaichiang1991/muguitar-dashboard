@@ -3,6 +3,7 @@ import { Calendar, Badge, Popover, PopoverProps } from 'antd'
 import styled from 'styled-components'
 import moment from 'moment'
 import { PresetStatusColorType } from 'antd/lib/_util/colors'
+import { record } from '../mock/attendence'
 
 //#region Popover 移到項目上的提示
 const StyledContent = styled.div`
@@ -15,7 +16,11 @@ interface IContentProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Content: FC<IContentProps> = ({ student }) => {
-  return <StyledContent>{student}</StyledContent>
+  return (
+    <StyledContent>
+      <span>學生： {student}</span>
+    </StyledContent>
+  )
 }
 
 interface IListPopoverProps extends PopoverProps {
@@ -42,11 +47,12 @@ interface IListItemProps extends LiHTMLAttributes<HTMLLIElement> {
 }
 
 const CalenderListItem: FC<IListItemProps> = props => {
+  const [teacher, student] = props.content.split('-')
   const handleClick = (e: any) => {
-    console.log('handle click', props)
+    console.log('handle click', props, teacher, student)
   }
   return (
-    <ListPopOver teacher={'MuGuitar'} student={'student 1'}>
+    <ListPopOver teacher={teacher} student={student}>
       <li {...props} onClick={handleClick} />
     </ListPopOver>
   )
@@ -64,35 +70,15 @@ interface IListData {
 const getListData: {
   (value: moment.Moment): Array<IListData>
 } = value => {
-  let listData
-  switch (value.date()) {
-    case 8:
-      listData = [
-        { type: 'warning', content: 'This is warning event.' },
-        { type: 'success', content: 'This is usual event.' },
-      ]
-      break
-    case 10:
-      listData = [
-        { type: 'warning', content: 'This is warning event.' },
-        { type: 'success', content: 'This is usual event.' },
-        { type: 'error', content: 'This is error event.' },
-      ]
-      break
-    case 15:
-      listData = [
-        { type: 'warning', content: 'This is warning event' },
-        { type: 'success', content: 'This is very long usual event。。....' },
-        { type: 'error', content: 'This is error event 1.' },
-        { type: 'error', content: 'This is error event 2.' },
-        { type: 'error', content: 'This is error event 3.' },
-        { type: 'error', content: 'This is error event 4.' },
-      ]
-      break
-    default:
-      break
-  }
-  return listData || []
+  const mapRecord = record
+    .filter(({ date }) => value.isSame(date, 'day'))
+    .map(({ teacher, student }) => ({
+      type:
+        teacher == 'Run' ? 'success' : teacher == 'Kai' ? 'warning' : 'error',
+      content: `${teacher} - ${student}`,
+    }))
+
+  return mapRecord || []
 }
 
 // 每日行事曆中的ul
@@ -144,7 +130,7 @@ const SteyldCalenderContainer = styled(Calendar)`
   padding-right: 8px;
 `
 
-const CalenderPage = (props: Props) => {
+const CalenderPage = () => {
   return <SteyldCalenderContainer dateCellRender={dateCellRender} />
 }
 
