@@ -2,7 +2,7 @@ import { Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
-import { subjectMapTitle } from '../data/constants'
+import { subjectMapTitle, teacherNameMap } from '../data/constants'
 import { teacherListState } from '../recoil'
 import DashboardBlock from './common/DashboardBlock'
 
@@ -17,6 +17,7 @@ const TeacherList = () => {
   const teacherList = useRecoilValue(teacherListState)
   const showTeacherList = teacherList.map(teacher => ({
     ...teacher,
+    name: teacherNameMap[teacher.key],
     subjects: teacher.subjects.map(sub => subjectMapTitle[sub]).join(' / '),
   }))
 

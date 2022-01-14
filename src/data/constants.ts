@@ -6,6 +6,12 @@ export const subjectMapTitle: { [key: number]: string } = {
   [eSubjectMap.mixing]: '編曲',
 }
 
+export const teacherNameMap: { [key: string]: string } = {
+  '000': '迦安',
+  '001': '宏睿',
+  '002': '凱強',
+}
+
 export const studentNameMap: { [key: string]: string } = {
   '000': '學生Ａ',
   '001': '學生Ｂ',

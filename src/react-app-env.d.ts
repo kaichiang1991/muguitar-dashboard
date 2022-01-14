@@ -14,7 +14,6 @@ interface IAttendenceData {
 
 interface ITeacherData {
   key: string
-  name: string
   subjects: Array<eSubjectMap>
 }
 

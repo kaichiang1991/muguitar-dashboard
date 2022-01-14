@@ -35,9 +35,6 @@ export const useReloadAttendence = () => {
   useEffect(() => {
     // ToDo 從server取得資料
     console.log('reload')
-    setArr([
-      ...records,
-      { key: 'abc', teacher: 'Kai', student: 'CC', date: moment([2022, 0, 1]) }, // 2022-1-1
-    ])
+    setArr(records)
   }, [setArr])
 }
