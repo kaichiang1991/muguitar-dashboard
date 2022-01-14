@@ -11,3 +11,14 @@ interface IAttendenceData {
   student: string
   date: moment.Moment
 }
+
+interface ITeacherData {
+  key: string
+  name: string
+  subjects: Array<eSubjectMap>
+}
+
+interface IStudentData {
+  key: string
+  subjects: Array<eSubjectMap>
+}

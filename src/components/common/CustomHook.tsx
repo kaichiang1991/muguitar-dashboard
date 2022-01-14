@@ -1,8 +1,31 @@
 import moment from 'moment'
 import { useEffect } from 'react'
 import { SetterOrUpdater, useSetRecoilState } from 'recoil'
-import { attendRecordState } from '../../recoil'
-import { record } from '../../mock/attendence'
+import {
+  attendRecordState,
+  studentListState,
+  teacherListState,
+} from '../../recoil'
+import records from '../../mock/attendence'
+import teacherList from '../../mock/teacher'
+import studentList from '../../mock/student'
+
+export const useLoadDataOnce = () => {
+  const setTeacherList: SetterOrUpdater<Array<ITeacherData>> =
+    useSetRecoilState(teacherListState)
+
+  const setStudentList: SetterOrUpdater<Array<IStudentData>> =
+    useSetRecoilState(studentListState)
+
+  useEffect(() => {
+    // ToDo 從server取得資料
+    setTeacherList(teacherList)
+  }, [setTeacherList])
+
+  useEffect(() => {
+    setStudentList(studentList)
+  }, [setStudentList])
+}
 
 // 重新取得出席紀錄
 export const useReloadAttendence = () => {
@@ -13,7 +36,7 @@ export const useReloadAttendence = () => {
     // ToDo 從server取得資料
     console.log('reload')
     setArr([
-      ...record,
+      ...records,
       { key: 'abc', teacher: 'Kai', student: 'CC', date: moment([2022, 0, 1]) }, // 2022-1-1
     ])
   }, [setArr])

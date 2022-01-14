@@ -1,23 +1,26 @@
-import { Col, Row } from 'antd'
+import { Row } from 'antd'
 import styled from 'styled-components'
 import AttendanceRecord from '../components/AttendanceRecord'
-import { useReloadAttendence } from '../components/common/CustomHook'
+import {
+  useLoadDataOnce,
+  useReloadAttendence,
+} from '../components/common/CustomHook'
+import StudentList from '../components/StudentList'
+import TeacherList from '../components/TeacherList'
 
 const StyledRow = styled(Row)``
 
 interface Props {}
 
 const Dashboard = (props: Props) => {
+  useLoadDataOnce()
   useReloadAttendence()
 
   return (
     <StyledRow>
-      <Col span={24}>
-        <h2>出席紀錄</h2>
-      </Col>
-      <Col span={24}>
-        <AttendanceRecord />
-      </Col>
+      <AttendanceRecord />
+      <TeacherList />
+      <StudentList />
     </StyledRow>
   )
 }

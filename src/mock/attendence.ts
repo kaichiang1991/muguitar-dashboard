@@ -2,7 +2,7 @@ import moment from 'moment'
 import 'moment/locale/zh-tw'
 moment.locale('zh-tw')
 
-export const record: Array<IAttendenceData> = [
+const records: Array<IAttendenceData> = [
   {
     key: 'data0',
     teacher: 'Kai',
@@ -28,3 +28,5 @@ export const record: Array<IAttendenceData> = [
     date: moment().year(2022).month(1).date(5).hour(15).minute(0), // 2022-2-5, 15:00
   },
 ]
+
+export default records
