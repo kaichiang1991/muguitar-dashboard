@@ -14,10 +14,10 @@ export const teacherNameMap: { [key: string]: string } = {
 }
 
 // 行事曆上教師顏色的對應
-export const teacherColorMap: { [key: string]: string } = {
-  '000': 'pink',
-  '001': 'cyan',
-  '002': '#108ee9',
+export const teacherColorMap: { [key: number]: string } = {
+  0: 'pink',
+  1: 'cyan',
+  2: '#108ee9',
 }
 
 // 學生名字對應

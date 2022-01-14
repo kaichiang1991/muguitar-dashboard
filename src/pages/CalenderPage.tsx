@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import moment from 'moment'
 import { useReloadAttendence } from '../components/common/CustomHook'
 import { useRecoilValue } from 'recoil'
-import { attendRecordState } from '../recoil'
+import { attendRecordState, teacherListState } from '../recoil'
 import {
   studentNameMap,
   teacherColorMap,
@@ -68,16 +68,23 @@ const CalenderListItem: FC<IListItemProps> = props => {
 //#region dateCellRender 每天行事曆的自定義元件
 interface IListData {
   key: string
-  teacher: string
+  teacherId: number
   student: string
 }
 
 // 取得每天行事曆資料
 const getListData = (
   value: moment.Moment,
-  records: Array<IAttendenceData>
+  records: Array<IAttendenceData>,
+  teachers: Array<ITeacherData>
 ): Array<IListData> => {
-  return records.filter(({ date }) => value.isSame(date, 'day')) // 判斷同一天
+  return records
+    .filter(({ date }) => value.isSame(date, 'day')) // 判斷同一天
+    .map(({ key, teacherId, student }) => ({
+      key,
+      teacherId,
+      student,
+    }))
 }
 
 // 每日行事曆中的ul
@@ -103,20 +110,21 @@ const StyledBadge = styled(Badge)`
 
 const dateCellRender = (
   _moment: moment.Moment,
-  records: Array<IAttendenceData>
+  records: Array<IAttendenceData>,
+  teachers: Array<ITeacherData>
 ): ReactNode => {
-  const listData = getListData(_moment, records)
+  const listData = getListData(_moment, records, teachers)
 
   return (
     <StyledDateUl>
-      {listData.map(({ teacher, student }) => {
+      {listData.map(({ teacherId, student }) => {
         const content: string = [
-          teacherNameMap[teacher],
+          teachers.find(({ key }) => key === teacherId)?.name,
           studentNameMap[student],
         ].join(' / ')
         return (
           <CalenderListItem key={content} content={content}>
-            <StyledBadge color={teacherColorMap[teacher]} text={content} />
+            <StyledBadge color={teacherColorMap[teacherId]} text={content} />
           </CalenderListItem>
         )
       })}
@@ -132,8 +140,12 @@ const SteyldCalenderContainer = styled(Calendar)`
 const CalenderPage: FC = () => {
   useReloadAttendence()
   const records: Array<IAttendenceData> = useRecoilValue(attendRecordState)
+  const teachers: Array<ITeacherData> = useRecoilValue(teacherListState)
+
   return (
-    <SteyldCalenderContainer dateCellRender={v => dateCellRender(v, records)} />
+    <SteyldCalenderContainer
+      dateCellRender={v => dateCellRender(v, records, teachers)}
+    />
   )
 }
 

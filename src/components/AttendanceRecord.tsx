@@ -2,7 +2,7 @@ import { Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { FC } from 'react'
 import { useRecoilValue } from 'recoil'
-import { sortAttendRecordState } from '../recoil'
+import { sortAttendRecordState, teacherListState } from '../recoil'
 import DashboardBlock from './common/DashboardBlock'
 
 // 定義欄位
@@ -13,7 +13,8 @@ const columns: ColumnsType<Object> = [
 ]
 
 const AttendanceRecord: FC = () => {
-  const records = useRecoilValue(sortAttendRecordState)
+  const records: Array<IAttendenceData> = useRecoilValue(sortAttendRecordState)
+  const teachers: Array<ITeacherData> = useRecoilValue(teacherListState)
 
   return (
     <DashboardBlock title='出席紀錄'>
@@ -21,6 +22,7 @@ const AttendanceRecord: FC = () => {
         columns={columns}
         dataSource={records.map(data => ({
           ...data,
+          teacher: teachers.find(({ key }) => key === data.teacherId)?.name,
           date: data.date.format('MMMM Do YYYY, h:mm'),
         }))}
         pagination={{ pageSize: 5 }}

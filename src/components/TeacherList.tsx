@@ -15,10 +15,9 @@ const StyledTeacherListContainer = styled.div``
 
 const TeacherList = () => {
   const teacherList = useRecoilValue(teacherListState)
-  const showTeacherList = teacherList.map(teacher => ({
-    ...teacher,
-    name: teacherNameMap[teacher.key],
-    subjects: teacher.subjects.map(sub => subjectMapTitle[sub]).join(' / '),
+  const showTeacherList = teacherList.map(({ key, name }) => ({
+    name,
+    subjects: '1, 2, 3',
   }))
 
   return (

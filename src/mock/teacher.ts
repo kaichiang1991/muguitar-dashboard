@@ -2,16 +2,19 @@ import { eSubjectMap } from '../data/enums'
 
 const teacherList: Array<ITeacherData> = [
   {
-    key: '000',
-    subjects: [eSubjectMap.guitar],
+    key: 0,
+    name: 'Kai',
+    salary: 500,
   },
   {
-    key: '001',
-    subjects: [eSubjectMap.mixing, eSubjectMap.guitar, eSubjectMap.e_guitar],
+    key: 1,
+    name: 'Run',
+    salary: 650,
   },
   {
-    key: '002',
-    subjects: [eSubjectMap.e_guitar, eSubjectMap.guitar],
+    key: 2,
+    name: 'Ray',
+    salary: 500,
   },
 ]
 

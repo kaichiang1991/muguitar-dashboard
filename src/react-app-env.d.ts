@@ -7,14 +7,15 @@ interface ILoginState {
 
 interface IAttendenceData {
   key: string
-  teacher: string
+  teacherId: number
   student: string
   date: moment.Moment
 }
 
 interface ITeacherData {
-  key: string
-  subjects: Array<eSubjectMap>
+  key: number
+  name: string
+  salary: number
 }
 
 interface IStudentData {

@@ -3,7 +3,6 @@ import { ColumnsType } from 'antd/lib/table'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
 import { studentNameMap, subjectMapTitle } from '../data/constants'
-import students from '../mock/student'
 import { studentListState } from '../recoil'
 import DashboardBlock from './common/DashboardBlock'
 
