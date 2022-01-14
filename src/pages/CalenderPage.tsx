@@ -2,10 +2,14 @@ import React, { FC, HTMLAttributes, LiHTMLAttributes, ReactNode } from 'react'
 import { Calendar, Badge, Popover, PopoverProps } from 'antd'
 import styled from 'styled-components'
 import moment from 'moment'
-import { PresetStatusColorType } from 'antd/lib/_util/colors'
 import { useReloadAttendence } from '../components/common/CustomHook'
 import { useRecoilValue } from 'recoil'
 import { attendRecordState } from '../recoil'
+import {
+  studentNameMap,
+  teacherColorMap,
+  teacherNameMap,
+} from '../data/constants'
 
 //#region Popover 移到項目上的提示
 const StyledContent = styled.div`
@@ -49,7 +53,7 @@ interface IListItemProps extends LiHTMLAttributes<HTMLLIElement> {
 }
 
 const CalenderListItem: FC<IListItemProps> = props => {
-  const [teacher, student] = props.content.split('-')
+  const [teacher, student] = props.content.split('/')
   const handleClick = (e: any) => {
     console.log('handle click', props, teacher, student)
   }
@@ -63,8 +67,9 @@ const CalenderListItem: FC<IListItemProps> = props => {
 
 //#region dateCellRender 每天行事曆的自定義元件
 interface IListData {
-  type: PresetStatusColorType | string
-  content: string
+  key: string
+  teacher: string
+  student: string
 }
 
 // 取得每天行事曆資料
@@ -72,15 +77,7 @@ const getListData = (
   value: moment.Moment,
   records: Array<IAttendenceData>
 ): Array<IListData> => {
-  const mapRecord = records
-    .filter(({ date }) => value.isSame(date, 'day'))
-    .map(({ teacher, student }) => ({
-      type:
-        teacher === 'Run' ? 'success' : teacher === 'Kai' ? 'warning' : 'error',
-      content: `${teacher} - ${student}`,
-    }))
-
-  return mapRecord || []
+  return records.filter(({ date }) => value.isSame(date, 'day')) // 判斷同一天
 }
 
 // 每日行事曆中的ul
@@ -100,14 +97,7 @@ const StyledBadge = styled(Badge)`
 
   &:hover {
     border-radius: 10px;
-    background-color: ${({ status }) =>
-      status === 'success'
-        ? '#52c41a'
-        : status === 'warning'
-        ? '#faad14'
-        : status === 'error'
-        ? '#ff4d4f'
-        : 'gray'};
+    background-color: ${props => props.color};
   }
 `
 
@@ -119,11 +109,17 @@ const dateCellRender = (
 
   return (
     <StyledDateUl>
-      {listData.map(({ content, type }) => (
-        <CalenderListItem key={content} content={content}>
-          <StyledBadge status={type as PresetStatusColorType} text={content} />
-        </CalenderListItem>
-      ))}
+      {listData.map(({ teacher, student }) => {
+        const content: string = [
+          teacherNameMap[teacher],
+          studentNameMap[student],
+        ].join(' / ')
+        return (
+          <CalenderListItem key={content} content={content}>
+            <StyledBadge color={teacherColorMap[teacher]} text={content} />
+          </CalenderListItem>
+        )
+      })}
     </StyledDateUl>
   )
 }
