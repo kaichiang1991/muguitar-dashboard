@@ -8,17 +8,33 @@ interface ILoginState {
 interface IAttendenceData {
   key: string
   teacherId: number
-  student: string
+  studentId: number
   date: moment.Moment
+}
+
+interface ICourseData {
+  key: number
+  teacherId: number
+  studentName: string
+  subject: string
+  time: moment.Moment
 }
 
 interface ITeacherData {
   key: number
   name: string
   salary: number
+  subjects: string
 }
 
 interface IStudentData {
-  key: string
-  subjects: Array<eSubjectMap>
+  key: number
+  name: string
+  subjects: string
+}
+
+interface IStudentCourseData {
+  key: number
+  studentId: number
+  courseId: number
 }

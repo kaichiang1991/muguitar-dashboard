@@ -6,13 +6,6 @@ export const subjectMapTitle: { [key: number]: string } = {
   [eSubjectMap.mixing]: '編曲',
 }
 
-// 教師名字對應
-export const teacherNameMap: { [key: string]: string } = {
-  '000': '迦安',
-  '001': '宏睿',
-  '002': '凱強',
-}
-
 // 行事曆上教師顏色的對應
 export const teacherColorMap: { [key: number]: string } = {
   0: 'pink',

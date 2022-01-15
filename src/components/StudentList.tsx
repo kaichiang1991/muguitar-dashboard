@@ -2,7 +2,6 @@ import { Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
-import { studentNameMap, subjectMapTitle } from '../data/constants'
 import { studentListState } from '../recoil'
 import DashboardBlock from './common/DashboardBlock'
 
@@ -21,16 +20,12 @@ const columns: ColumnsType<Object> = [
 const StyledStudentListContainer = styled.div``
 
 const StudentList = () => {
-  const studentList = useRecoilValue(studentListState)
-  const showStudentList = studentList.map(student => ({
-    ...student,
-    name: studentNameMap[student.key],
-    subjects: student.subjects.map(sub => subjectMapTitle[sub]).join(' / '),
-  }))
+  const studentList: Array<IStudentData> = useRecoilValue(studentListState)
+
   return (
     <DashboardBlock title='學生清單'>
       <StyledStudentListContainer>
-        <Table columns={columns} dataSource={showStudentList} />
+        <Table columns={columns} dataSource={studentList} />
       </StyledStudentListContainer>
     </DashboardBlock>
   )

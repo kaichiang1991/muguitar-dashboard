@@ -2,14 +2,10 @@ import React, { FC, HTMLAttributes, LiHTMLAttributes, ReactNode } from 'react'
 import { Calendar, Badge, Popover, PopoverProps } from 'antd'
 import styled from 'styled-components'
 import moment from 'moment'
-import { useReloadAttendence } from '../components/common/CustomHook'
+import { useReloadData } from '../components/common/CustomHook'
 import { useRecoilValue } from 'recoil'
-import { attendRecordState, teacherListState } from '../recoil'
-import {
-  studentNameMap,
-  teacherColorMap,
-  teacherNameMap,
-} from '../data/constants'
+import { courseListState, teacherListState } from '../recoil'
+import { teacherColorMap } from '../data/constants'
 
 //#region Popover 移到項目上的提示
 const StyledContent = styled.div`
@@ -67,7 +63,7 @@ const CalenderListItem: FC<IListItemProps> = props => {
 
 //#region dateCellRender 每天行事曆的自定義元件
 interface IListData {
-  key: string
+  key: number
   teacherId: number
   student: string
 }
@@ -75,15 +71,14 @@ interface IListData {
 // 取得每天行事曆資料
 const getListData = (
   value: moment.Moment,
-  records: Array<IAttendenceData>,
-  teachers: Array<ITeacherData>
+  records: Array<ICourseData>
 ): Array<IListData> => {
   return records
-    .filter(({ date }) => value.isSame(date, 'day')) // 判斷同一天
-    .map(({ key, teacherId, student }) => ({
+    .filter(({ time }) => value.isSame(time, 'day')) // 判斷同一天
+    .map(({ key, teacherId, studentName }) => ({
       key,
       teacherId,
-      student,
+      student: studentName,
     }))
 }
 
@@ -110,17 +105,17 @@ const StyledBadge = styled(Badge)`
 
 const dateCellRender = (
   _moment: moment.Moment,
-  records: Array<IAttendenceData>,
+  records: Array<ICourseData>,
   teachers: Array<ITeacherData>
 ): ReactNode => {
-  const listData = getListData(_moment, records, teachers)
+  const listData: Array<IListData> = getListData(_moment, records)
 
   return (
     <StyledDateUl>
       {listData.map(({ teacherId, student }) => {
         const content: string = [
           teachers.find(({ key }) => key === teacherId)?.name,
-          studentNameMap[student],
+          student,
         ].join(' / ')
         return (
           <CalenderListItem key={content} content={content}>
@@ -138,13 +133,13 @@ const SteyldCalenderContainer = styled(Calendar)`
 `
 
 const CalenderPage: FC = () => {
-  useReloadAttendence()
-  const records: Array<IAttendenceData> = useRecoilValue(attendRecordState)
+  useReloadData()
+  const courses: Array<ICourseData> = useRecoilValue(courseListState)
   const teachers: Array<ITeacherData> = useRecoilValue(teacherListState)
 
   return (
     <SteyldCalenderContainer
-      dateCellRender={v => dateCellRender(v, records, teachers)}
+      dateCellRender={v => dateCellRender(v, courses, teachers)}
     />
   )
 }

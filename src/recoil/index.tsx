@@ -42,3 +42,23 @@ export const studentListState: RecoilState<Array<IStudentData>> = atom({
   default: [] as Array<IStudentData>,
 })
 //#endregion 學生資料
+
+//#region 課程資料
+export const courseListState: RecoilState<Array<ICourseData>> = atom({
+  key: 'courseListState',
+  default: [] as Array<ICourseData>,
+})
+
+// 排序過的課程紀錄 （先用出席時間
+export const sortCourseListState: RecoilValueReadOnly<Array<ICourseData>> =
+  selector({
+    key: 'sortCourseListState',
+    get: ({ get }) => {
+      const records = get(courseListState)
+      const sortFn = (a: ICourseData, b: ICourseData): number =>
+        a.time.isBefore(b.time) ? 1 : -1
+
+      return records.slice().sort(sortFn)
+    },
+  })
+//#endregion 課程資料

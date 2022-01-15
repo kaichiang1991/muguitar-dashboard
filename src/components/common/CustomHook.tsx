@@ -2,12 +2,14 @@ import { useEffect } from 'react'
 import { SetterOrUpdater, useSetRecoilState } from 'recoil'
 import {
   attendRecordState,
+  courseListState,
   studentListState,
   teacherListState,
 } from '../../recoil'
 import records from '../../mock/attendence'
 import teacherList from '../../mock/teacher'
 import studentList from '../../mock/student'
+import courses from '../../mock/course'
 
 export const useLoadDataOnce = () => {
   const setTeacherList: SetterOrUpdater<Array<ITeacherData>> =
@@ -26,8 +28,8 @@ export const useLoadDataOnce = () => {
   }, [setStudentList])
 }
 
-// 重新取得出席紀錄
-export const useReloadAttendence = () => {
+// 重新取得紀錄
+export const useReloadData = () => {
   const setArr: SetterOrUpdater<Array<IAttendenceData>> =
     useSetRecoilState(attendRecordState)
 
@@ -36,4 +38,10 @@ export const useReloadAttendence = () => {
     console.log('reload')
     setArr(records)
   }, [setArr])
+  const setCourseList: SetterOrUpdater<Array<ICourseData>> =
+    useSetRecoilState(courseListState)
+
+  useEffect(() => {
+    setCourseList(courses)
+  }, [setCourseList])
 }

@@ -13,7 +13,7 @@ interface IBrandDef {
 }
 
 export const brandDef: IBrandDef = {
-  name: 'BRAND',
+  name: 'MuGuitar',
   Icon: AppleFilled,
 }
 
