@@ -21,7 +21,7 @@ interface ICourseData {
 }
 
 interface ITeacherData {
-  key: number
+  id: number
   name: string
   salary: number
   subjects: string

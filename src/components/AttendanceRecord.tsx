@@ -22,9 +22,9 @@ const AttendanceRecord: FC = () => {
         columns={columns}
         dataSource={courses.map(({ key, teacherId, time, studentName }) => ({
           key,
-          teacher: teachers.find(({ key }) => key === teacherId)?.name,
+          teacher: teachers.find(({ id }) => id === teacherId)?.name,
           student: studentName,
-          date: time.format('MMMM Do YYYY, h:mm'),
+          date: time.format('MMMM DD YYYY, h:mm'),
         }))}
         pagination={{ pageSize: 5 }}
       ></Table>

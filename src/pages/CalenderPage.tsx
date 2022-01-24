@@ -114,7 +114,7 @@ const dateCellRender = (
     <StyledDateUl>
       {listData.map(({ teacherId, student }) => {
         const content: string = [
-          teachers.find(({ key }) => key === teacherId)?.name,
+          teachers.find(({ id }) => id === teacherId)?.name,
           student,
         ].join(' / ')
         return (
