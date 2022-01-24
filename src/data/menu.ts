@@ -2,6 +2,7 @@ import Icon, {
   AppleFilled,
   CalendarOutlined,
   DashboardOutlined,
+  SettingOutlined,
 } from '@ant-design/icons'
 import { MenuItemProps } from 'antd'
 
@@ -36,6 +37,12 @@ const menuData: Array<IMenuObj> = [
     IconElement: CalendarOutlined,
     name: 'Calender',
     to: '/dashboard/calender',
+  },
+  {
+    key: '2',
+    IconElement: SettingOutlined,
+    name: 'Setting',
+    to: '/dashboard/setting',
   },
 ]
 

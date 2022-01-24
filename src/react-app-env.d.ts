@@ -28,9 +28,10 @@ interface ITeacherData {
 }
 
 interface IStudentData {
-  key: number
+  id: number
   name: string
-  subjects: string
+  comment?: string
+  teacher_id: number
 }
 
 interface IStudentCourseData {

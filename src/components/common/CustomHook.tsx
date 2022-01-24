@@ -24,9 +24,8 @@ export const useLoadDataOnce = () => {
     useSetRecoilState(studentListState)
 
   useEffect(() => {
-    // ToDo 從server取得資料
     ;(async () => {
-      // 取得 api 列表
+      // 取得 teacher 列表
       const { data }: { data: Array<ITeacherData> } = await request(
         '/api/teacher'
       )
@@ -39,16 +38,18 @@ export const useLoadDataOnce = () => {
   }, [setTeacherList])
 
   useEffect(() => {
-    setStudentList(studentList)
-  }, [setStudentList])
-
-  useEffect(() => {
     ;(async () => {
-      // 取得 api 列表
-      const apiList: IResponseData = await request('/api')
-      console.log('apiList', apiList)
+      // 取得 student 列表
+      const { data }: { data: Array<IStudentData> } = await request(
+        '/api/student'
+      )
+      setStudentList(
+        useMockData
+          ? studentList
+          : data.map(student => ({ ...student, key: student.id }))
+      )
     })()
-  }, [])
+  }, [setStudentList])
 }
 
 // 重新取得紀錄
