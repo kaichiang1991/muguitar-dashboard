@@ -10,7 +10,7 @@ import records from '../../mock/attendence'
 import teacherList from '../../mock/teacher'
 import studentList from '../../mock/student'
 import courses from '../../mock/course'
-import { IResponseData, request } from '../../server'
+import { request } from '../../server'
 
 const useMockData: boolean =
   process.env.NODE_ENV !== 'production' &&
