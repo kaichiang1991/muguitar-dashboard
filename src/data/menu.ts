@@ -1,5 +1,6 @@
 import Icon, {
   AppleFilled,
+  BarcodeOutlined,
   CalendarOutlined,
   DashboardOutlined,
   SettingOutlined,
@@ -40,6 +41,12 @@ const menuData: Array<IMenuObj> = [
   },
   {
     key: '2',
+    IconElement: BarcodeOutlined,
+    name: '打卡',
+    to: '/dashboard/punch',
+  },
+  {
+    key: '3',
     IconElement: SettingOutlined,
     name: 'Setting',
     to: '/dashboard/setting',

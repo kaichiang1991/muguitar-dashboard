@@ -56,7 +56,6 @@ const LoginPage = () => {
       <StyledForm
         form={form}
         name='normal_login'
-        className='login-form'
         initialValues={{ remember: true }}
         onFinish={handleFinish}
       >
