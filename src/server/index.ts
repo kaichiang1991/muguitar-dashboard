@@ -11,6 +11,8 @@ export enum eErrorCode {
 
   // 個別的錯誤
   deleteNoOne = -2,
+  notFound = -3,
+  userIdentifyFail = -4,
 }
 
 export const request = async (

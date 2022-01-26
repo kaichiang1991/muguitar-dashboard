@@ -39,14 +39,18 @@ const StyledFrom = styled(Form)`
   max-width: 300px;
   width: 50%;
 
+  @media (max-width: 575px) {
+    min-width: 95%;
+  }
+
   .login-form-button {
     width: 100%;
   }
 `
 
 const PunchPage = () => {
-  const { username }: ILoginState = useRecoilValue(loginState)
-  const students: Array<IStudentData> = useStudentOfTeacher(username)
+  const { username, teacher_id }: ILoginState = useRecoilValue(loginState)
+  const students: Array<IStudentData> = useStudentOfTeacher(teacher_id)
 
   const [form] = useForm()
   const handleFinish = async (values: unknown) => {

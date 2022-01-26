@@ -15,7 +15,11 @@ const columns: ColumnsType<Object> = [
 const AttendanceRecord: FC = () => {
   const dataSource = useRecoilValue<Array<ICourseTableData>>(
     sortCourseListState
-  ).map(data => ({ ...data, date: data.date.format('YYYY-MM-DD, hh:mm') }))
+  ).map(data => ({
+    ...data,
+    key: data.id,
+    date: data.date.format('YYYY-MM-DD, hh:mm'),
+  }))
 
   return (
     <DashboardBlock title='出席紀錄'>

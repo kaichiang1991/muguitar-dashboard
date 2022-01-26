@@ -1,46 +1,57 @@
-# Getting Started with Create React App
+# MuGuitar 後台系統
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 登入/註冊頁面
 
-## Available Scripts
+- 自己註冊帳號密碼和使用者名稱
+- 需指定一個系統管理員新增的老師
 
-In the project directory, you can run:
+## 首頁
 
-### `npm start`
+- 紀錄總覽
+- ToDo
+  - 簡易圖表
+  - 可以修改自己的打卡記錄
+  - 可以修改自己的學生紀錄
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 打卡行事曆
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- 有打卡的行事曆總覽
 
-### `npm test`
+## 打卡
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 可以指定時間/學生打卡
 
-### `npm run build`
+## 設定
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- 可以新增教師
+- 可以新增學生
+- ToDo
+  - 需要有管理者權限
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## ToDo
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 個人資料的修改
 
-### `npm run eject`
+### 單獨的圖表 menu
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### RWD (100vh 的設定在手機上不好用)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 統計薪資的計算
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+<br><br><br>
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# 新增老師流程
 
-## Learn More
+1. 管理者進入設定 > 新增教師
+2. 教師本人註冊帳號 > 選定已註冊的教師
+   <br><br><br>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# 新增學生流程
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. 管理者進入設定 > 新增學生
+   <br><br><br>
+
+# 打卡流程
+
+1. 先有新增過學生的資料
+2. 進入打卡 > 選擇學生

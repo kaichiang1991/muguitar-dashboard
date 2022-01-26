@@ -3,8 +3,10 @@ import { atom, RecoilState, RecoilValueReadOnly, selector } from 'recoil'
 export const loginState: RecoilState<ILoginState> = atom({
   key: 'loginState',
   default: {
-    username: process.env.REACT_APP_USERNAME || '',
+    account: process.env.REACT_APP_USERNAME || '',
     password: '',
+    username: '',
+    teacher_id: -1,
   },
 })
 

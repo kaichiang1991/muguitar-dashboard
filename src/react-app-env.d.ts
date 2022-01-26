@@ -1,8 +1,10 @@
 /// <reference types="react-scripts" />
 
 interface ILoginState {
-  username: string
+  account: string
   password: string
+  username: string
+  teacher_id: number
 }
 
 interface IAttendenceData {

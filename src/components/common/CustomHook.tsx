@@ -114,37 +114,36 @@ export const useReloadData = () => {
 
 /**
  * 取得教師的學生列表
- * @param {string} teacher_name 教師名字
+ * @param {number} teacher_id 教師id
  * @returns {Array<IStudentData>}
  */
 export const useStudentOfTeacher = (
-  teacher_name: string
+  teacher_id: number
 ): Array<IStudentData> => {
   const teacherList: Array<ITeacherData> = useRecoilValue(teacherListState)
 
   const [students, setStudents] = useState<Array<IStudentData>>([])
   useEffect(() => {
-    console.log('use student of teacher')
     ;(async () => {
       const teacher: ITeacherData = teacherList.find(
-        ({ name }) => name === teacher_name
+        ({ id }) => id === teacher_id
       )!
       if (!teacher) {
-        message.error(`找不到教師 ${teacher_name} 的資料`)
+        message.error(`找不到教師id ${teacher_id} 的資料`)
         return
       }
 
       const { code, data }: IResponseData = await request(
-        `/api/find/student/${teacher_name}/teacher_name`
+        `/api/find/student/${teacher_id}/teacher_id`
       )
       if (code < eErrorCode.success) {
-        message.warn(`找不到 ${teacher_name} 的學生 ${code}`)
+        message.warn(`找不到 id ${teacher_id} 的學生 ${code}`)
         return
       }
 
       setStudents(data)
     })()
-  }, [teacher_name, teacherList, setStudents])
+  }, [teacher_id, teacherList, setStudents])
 
   return students
 }
