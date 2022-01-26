@@ -12,6 +12,8 @@ const StyledLayout = styled(Layout)`
 const StyledLayoutContent = styled(Layout.Content)`
   padding-left: 8px;
   padding-top: 4px;
+  overflow: auto;
+  max-height: 100vh;
 `
 
 const DefaultLayout: React.FC = ({ children }) => {

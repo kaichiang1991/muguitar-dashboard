@@ -30,13 +30,13 @@ const menuData: Array<IMenuObj> = [
   {
     key: '0',
     IconElement: DashboardOutlined,
-    name: 'Dashboard',
+    name: '首頁',
     to: '/dashboard',
   },
   {
     key: '1',
     IconElement: CalendarOutlined,
-    name: 'Calender',
+    name: '打卡記錄',
     to: '/dashboard/calender',
   },
   {
@@ -48,7 +48,7 @@ const menuData: Array<IMenuObj> = [
   {
     key: '3',
     IconElement: SettingOutlined,
-    name: 'Setting',
+    name: '設定',
     to: '/dashboard/setting',
   },
 ]
