@@ -4,38 +4,48 @@ import styled from 'styled-components'
 import moment from 'moment'
 import { useReloadData } from '../components/common/CustomHook'
 import { useRecoilValue } from 'recoil'
-import { courseListState, teacherListState } from '../recoil'
+import { courseListWithTeacherState } from '../recoil'
 import { teacherColorMap } from '../data/constants'
 
 //#region Popover 移到項目上的提示
 const StyledContent = styled.div`
   width: 100px;
   text-align: right;
+  display: flex;
+  flex-direction: column;
 `
 
 interface IContentProps extends HTMLAttributes<HTMLDivElement> {
   student: string
+  date: moment.Moment
 }
 
-const Content: FC<IContentProps> = ({ student }) => {
+const Content: FC<IContentProps> = ({ student, date }) => {
   return (
     <StyledContent>
       <span>學生： {student}</span>
+      <span>時間： {date.format('hh:mm')}</span>
     </StyledContent>
   )
 }
 
 interface IListPopoverProps extends PopoverProps {
-  teacher?: string
+  teacher: string
   student: string
+  date: moment.Moment
 }
 
-const ListPopOver: FC<IListPopoverProps> = ({ children, teacher, student }) => {
+const ListPopOver: FC<IListPopoverProps> = ({
+  children,
+  teacher,
+  student,
+  date,
+}) => {
   return (
     <Popover
       placement={'topLeft'}
       title={teacher}
-      content={() => <Content student={student} />}
+      content={() => <Content student={student} date={date} />}
     >
       {children}
     </Popover>
@@ -45,16 +55,19 @@ const ListPopOver: FC<IListPopoverProps> = ({ children, teacher, student }) => {
 
 //#region List 自定義行事曆上點下去的項目
 interface IListItemProps extends LiHTMLAttributes<HTMLLIElement> {
-  content: string
+  teacher: string
+  student: string
+  date: moment.Moment
 }
 
 const CalenderListItem: FC<IListItemProps> = props => {
-  const [teacher, student] = props.content.split('/')
   const handleClick = (e: any) => {
-    console.log('handle click', props, teacher, student)
+    // console.log('handle click', teacher, student)
   }
+
+  const { teacher, student, date } = props
   return (
-    <ListPopOver teacher={teacher} student={student}>
+    <ListPopOver teacher={teacher} student={student} date={date}>
       <li {...props} onClick={handleClick} />
     </ListPopOver>
   )
@@ -63,24 +76,18 @@ const CalenderListItem: FC<IListItemProps> = props => {
 
 //#region dateCellRender 每天行事曆的自定義元件
 interface IListData {
-  key: number
-  teacherId: number
+  id: number
+  teacher: string
   student: string
+  date: moment.Moment
 }
 
 // 取得每天行事曆資料
 const getListData = (
   value: moment.Moment,
-  records: Array<ICourseData>
-): Array<IListData> => {
-  return records
-    .filter(({ time }) => value.isSame(time, 'day')) // 判斷同一天
-    .map(({ key, teacherId, studentName }) => ({
-      key,
-      teacherId,
-      student: studentName,
-    }))
-}
+  courseList: Array<ICourseTableData>
+): Array<IListData> =>
+  courseList.filter(({ date }) => value.isSame(date, 'day')) // 判斷同一天
 
 // 每日行事曆中的ul
 const StyledDateUl = styled.ul`
@@ -103,23 +110,33 @@ const StyledBadge = styled(Badge)`
   }
 `
 
+/**
+ * 每天的行事曆 render 格式
+ * @param _moment
+ * @param courseList
+ * @param teachers
+ * @returns
+ */
 const dateCellRender = (
   _moment: moment.Moment,
-  records: Array<ICourseData>,
-  teachers: Array<ITeacherData>
+  courseList: Array<ICourseTableData>
 ): ReactNode => {
-  const listData: Array<IListData> = getListData(_moment, records)
+  const listData: Array<IListData> = getListData(_moment, courseList)
 
   return (
     <StyledDateUl>
-      {listData.map(({ teacherId, student }) => {
-        const content: string = [
-          teachers.find(({ id }) => id === teacherId)?.name,
-          student,
-        ].join(' / ')
+      {listData.map(({ id, teacher, student, date }) => {
         return (
-          <CalenderListItem key={content} content={content}>
-            <StyledBadge color={teacherColorMap[teacherId]} text={content} />
+          <CalenderListItem
+            key={id}
+            teacher={teacher}
+            student={student}
+            date={date}
+          >
+            <StyledBadge
+              color={teacherColorMap[teacher]}
+              text={[teacher, student].join(' / ')}
+            />
           </CalenderListItem>
         )
       })}
@@ -134,12 +151,14 @@ const SteyldCalenderContainer = styled(Calendar)`
 
 const CalenderPage: FC = () => {
   useReloadData()
-  const courses: Array<ICourseData> = useRecoilValue(courseListState)
-  const teachers: Array<ITeacherData> = useRecoilValue(teacherListState)
+
+  const courseList: Array<ICourseTableData> = useRecoilValue(
+    courseListWithTeacherState
+  )
 
   return (
     <SteyldCalenderContainer
-      dateCellRender={v => dateCellRender(v, courses, teachers)}
+      dateCellRender={v => dateCellRender(v, courseList)}
     />
   )
 }

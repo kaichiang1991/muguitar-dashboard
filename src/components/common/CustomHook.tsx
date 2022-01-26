@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react'
-import { SetterOrUpdater, useRecoilValue, useSetRecoilState } from 'recoil'
+import {
+  SetterOrUpdater,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from 'recoil'
 import {
   attendRecordState,
   courseListWithTeacherState,
@@ -7,20 +12,20 @@ import {
   teacherListState,
 } from '../../recoil'
 import records from '../../mock/attendence'
-import teacherList from '../../mock/teacher'
+import mockTeacherList from '../../mock/teacher'
 import studentList from '../../mock/student'
-import courses from '../../mock/course'
 import { eErrorCode, IResponseData, request } from '../../server'
 import { message } from 'antd'
 import moment from 'moment'
+import { teacherColorArr, teacherColorMap } from '../../data/constants'
 
 const useMockData: boolean =
   process.env.NODE_ENV !== 'production' &&
   process.env.REACT_APP_TESTDATA === 'true'
 
 export const useLoadDataOnce = () => {
-  const setTeacherList: SetterOrUpdater<Array<ITeacherData>> =
-    useSetRecoilState(teacherListState)
+  const [teacherList, setTeacherList] =
+    useRecoilState<Array<ITeacherData>>(teacherListState)
 
   const setStudentList: SetterOrUpdater<Array<IStudentData>> =
     useSetRecoilState(studentListState)
@@ -33,11 +38,20 @@ export const useLoadDataOnce = () => {
       )
       setTeacherList(
         useMockData
-          ? teacherList
+          ? mockTeacherList
           : data.map(teacher => ({ ...teacher, key: teacher.id }))
       )
     })()
   }, [setTeacherList])
+
+  // 設定每個教師用的顏色
+  useEffect(() => {
+    teacherList.forEach(({ name }, index) => {
+      teacherColorMap[name] = teacherColorArr[index]
+    })
+  }, [teacherList])
+
+  useEffect(() => {}, [])
 
   useEffect(() => {
     ;(async () => {
@@ -67,6 +81,7 @@ export const useReloadData = () => {
 
   const setCourseWithTeacher: SetterOrUpdater<Array<ICourseTableData>> =
     useSetRecoilState(courseListWithTeacherState)
+
   useEffect(() => {
     ;(async () => {
       const { code, data }: IResponseData = await request(
@@ -80,7 +95,7 @@ export const useReloadData = () => {
       const newCourseData: Array<ICourseTableData> = data.map(
         (_data: ICourseWithTeacher) => {
           const {
-            id: key,
+            id,
             time,
             Student: {
               name: student,
@@ -88,7 +103,7 @@ export const useReloadData = () => {
             },
           } = _data
           const date: moment.Moment = moment(time)
-          return { key, teacher, student, date }
+          return { id, teacher, student, date }
         }
       )
 
@@ -129,7 +144,7 @@ export const useStudentOfTeacher = (
 
       setStudents(data)
     })()
-  }, [teacherList, setStudents])
+  }, [teacher_name, teacherList, setStudents])
 
   return students
 }
