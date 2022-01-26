@@ -20,6 +20,27 @@ interface ICourseData {
   time: moment.Moment
 }
 
+interface ICourseWithTeacher {
+  id: number
+  student_id: number
+  subject: string
+  time: string
+  Student: {
+    name: string
+    Teacher: {
+      id: number
+      name: string
+    }
+  }
+}
+
+interface ICourseTableData {
+  id: number
+  teacher: string
+  student: string
+  date: moment.Moment
+}
+
 interface ITeacherData {
   id: number
   name: string

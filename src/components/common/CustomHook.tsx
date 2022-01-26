@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import { SetterOrUpdater, useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   attendRecordState,
-  courseListState,
-  loginState,
+  courseListWithTeacherState,
   studentListState,
   teacherListState,
 } from '../../recoil'
@@ -13,6 +12,7 @@ import studentList from '../../mock/student'
 import courses from '../../mock/course'
 import { eErrorCode, IResponseData, request } from '../../server'
 import { message } from 'antd'
+import moment from 'moment'
 
 const useMockData: boolean =
   process.env.NODE_ENV !== 'production' &&
@@ -65,12 +65,36 @@ export const useReloadData = () => {
     setArr(records)
   }, [setArr])
 
-  const setCourseList: SetterOrUpdater<Array<ICourseData>> =
-    useSetRecoilState(courseListState)
-
+  const setCourseWithTeacher: SetterOrUpdater<Array<ICourseTableData>> =
+    useSetRecoilState(courseListWithTeacherState)
   useEffect(() => {
-    setCourseList(courses)
-  }, [setCourseList])
+    ;(async () => {
+      const { code, data }: IResponseData = await request(
+        '/api/find/course/withTeacher'
+      )
+      if (code < eErrorCode.success) {
+        message.error(`找所有出席紀錄錯誤 ${code}`)
+        return
+      }
+
+      const newCourseData: Array<ICourseTableData> = data.map(
+        (_data: ICourseWithTeacher) => {
+          const {
+            id: key,
+            time,
+            Student: {
+              name: student,
+              Teacher: { name: teacher },
+            },
+          } = _data
+          const date: moment.Moment = moment(time)
+          return { key, teacher, student, date }
+        }
+      )
+
+      setCourseWithTeacher(newCourseData)
+    })()
+  }, [setCourseWithTeacher])
 }
 
 /**

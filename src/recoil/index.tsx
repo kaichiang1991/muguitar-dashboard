@@ -49,16 +49,25 @@ export const courseListState: RecoilState<Array<ICourseData>> = atom({
   default: [] as Array<ICourseData>,
 })
 
-// 排序過的課程紀錄 （先用出席時間
-export const sortCourseListState: RecoilValueReadOnly<Array<ICourseData>> =
+export const courseListWithTeacherState: RecoilState<Array<ICourseTableData>> =
+  atom({
+    key: 'courseListWithTeacherState',
+    default: [] as Array<ICourseTableData>,
+  })
+
+export const sortCourseListState: RecoilValueReadOnly<Array<ICourseTableData>> =
   selector({
     key: 'sortCourseListState',
     get: ({ get }) => {
-      const records = get(courseListState)
-      const sortFn = (a: ICourseData, b: ICourseData): number =>
-        a.time.isBefore(b.time) ? 1 : -1
+      const courseList: Array<ICourseTableData> = get(
+        courseListWithTeacherState
+      )
 
-      return records.slice().sort(sortFn)
+      // 從最後的排到最前的
+      const sortFn = (a: ICourseTableData, b: ICourseTableData): number =>
+        a.date.isBefore(b.date) ? 1 : -1
+
+      return courseList.slice().sort(sortFn)
     },
   })
 //#endregion 課程資料
